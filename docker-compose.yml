@@ -1,0 +1,37 @@
+version: "3"
+
+
+services:
+  web:
+      image: nginx:latest
+      ports:
+          - "8080:80"
+          - "443:443"
+      volumes:
+          - ./www:/var/www/phpinfo.php
+          - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf
+          - ./logs/nginx:/var/log/nginx
+      links:
+          - php
+  php:
+      image: php:7-fpm
+      expose:
+          - "9080"
+      volumes:
+          - ./www:/var/www/phpinfo.php
+          - ./config/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      links:
+          - mysql
+          - redis
+  mysql:
+      image: mysql:latest
+      expose:
+          - "3306"
+      volumes:
+          - ./.data/db:/var/lib/mysql
+      environment:
+          - MYSQL_ROOT_PASSWORD=root
+  redis:
+      image: redis:latest
+      expose:
+          - "6379"
