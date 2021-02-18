@@ -115,7 +115,7 @@ apt-get install wget -y
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \\
     unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip  -d /usr/bin && \\
     rm -rf /tmp/* && \\ 
-    rm -rf /var/cache/apk/* && \\
+    rm -rf /var/cache/apt/* && \\
     rm -rf /var/tmp/*
 
 
