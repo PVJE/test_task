@@ -98,7 +98,7 @@ mkdir -p ./"$tfdir"
 
 	cat << EOF > ./"$trdir"/"$dfn"
 FROM ubuntu:latest
-ARG TERRAFORM_VERSION="$terrafrom_version"
+ENV TERRAFORM_VERSION="$terrafrom_version"
 ARG AWS_PROFILE
 
 RUN apt-get update -y && \\
@@ -112,13 +112,13 @@ apt-get install wget -y
 ################################
 
 # Download terraform for linux
-RUN wget https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
+RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \\
+    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip  -d /usr/bin && \\
+    rm -rf /tmp/* && \\ 
+    rm -rf /var/cache/apk/* && \\
+    rm -rf /var/tmp/*
 
-# Unzip
-RUN unzip terraform_0.11.11_linux_amd64.zip
 
-# Move to local bin
-RUN mv terraform /usr/local/bin/
 
 CMD ["terraform", "--version"]
 EOF
